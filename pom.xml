@@ -97,21 +97,27 @@
             </plugin>
 
             <!-- SECCIÓN 7: PMD (Análisis Estático) -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>3.21.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>pmd</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <targetJdk>17</targetJdk>
-                </configuration>
-            </plugin>
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-pmd-plugin</artifactId>
+    <version>3.21.2</version>
+    <executions>
+        <execution>
+            <id>pmd-check</id>
+            <phase>verify</phase> <!-- Forzamos a que ocurra en verify -->
+            <goals>
+                <goal>pmd</goal>
+                <goal>cpd</goal> <!-- Genera también el reporte de código duplicado -->
+                <goal>check</goal> <!-- Opcional: para que falle si hay errores graves -->
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <targetJdk>17</targetJdk>
+        <skipEmptyReport>false</skipEmptyReport> <!-- Generar reporte aunque no haya errores -->
+        <failOnViolation>false</failOnViolation> <!-- Para que Jenkins no aborte el build -->
+    </configuration>
+</plugin>
         </plugins>
     </build>
 </project>
